@@ -32,7 +32,8 @@ export default function DocPage() {
   useEffect(() => {
     if (!docId) return;
 
-    const wsProvider = new WebsocketProvider('ws://localhost:1234', docId, ydoc);
+   const SYNC_SERVER_URL = process.env.NEXT_PUBLIC_SYNC_SERVER_URL || 'ws://localhost:1234';
+const wsProvider = new WebsocketProvider(SYNC_SERVER_URL, docId, ydoc);
     const idbProvider = new IndexeddbPersistence(docId, ydoc);
 
     wsProvider.on('status', (event: { status: string }) => {
