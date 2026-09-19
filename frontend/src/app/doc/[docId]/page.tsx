@@ -16,6 +16,39 @@ const COLORS = ['#f87171', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f472b6'
 function randomFrom(arr: string[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+function Toolbar({ editor }: { editor: any }) {
+  if (!editor) {
+  return (
+    <main style={{ maxWidth: 800, margin: '40px auto', padding: '0 20px', textAlign: 'center', color: '#888' }}>
+      <p style={{ marginTop: 100 }}>Loading document…</p>
+    </main>
+  );
+}
+
+  const btn = (active: boolean): React.CSSProperties => ({
+    padding: '6px 12px',
+    borderRadius: 6,
+    background: active ? '#333' : '#1a1a1a',
+    color: '#fff',
+    border: '1px solid #333',
+    cursor: 'pointer',
+    fontSize: 13,
+  });
+
+  return (
+    <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
+      <button style={btn(editor.isActive('bold'))} onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
+      <button style={btn(editor.isActive('italic'))} onClick={() => editor.chain().focus().toggleItalic().run()}>I</button>
+      <button style={btn(editor.isActive('strike'))} onClick={() => editor.chain().focus().toggleStrike().run()}>S</button>
+      <button style={btn(editor.isActive('heading', { level: 1 }))} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>H1</button>
+      <button style={btn(editor.isActive('heading', { level: 2 }))} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button>
+      <button style={btn(editor.isActive('bulletList'))} onClick={() => editor.chain().focus().toggleBulletList().run()}>• List</button>
+      <button style={btn(editor.isActive('orderedList'))} onClick={() => editor.chain().focus().toggleOrderedList().run()}>1. List</button>
+      <button style={btn(editor.isActive('blockquote'))} onClick={() => editor.chain().focus().toggleBlockquote().run()}>❝</button>
+      <button style={btn(editor.isActive('codeBlock'))} onClick={() => editor.chain().focus().toggleCodeBlock().run()}>{'</>'}</button>
+    </div>
+  );
+}
 
 export default function DocPage() {
   const params = useParams();
@@ -170,16 +203,17 @@ const wsProvider = new WebsocketProvider(SYNC_SERVER_URL, docId, ydoc);
       </div>
 
       <div
-        style={{
-          border: '1px solid #2a2a2a',
-          borderRadius: 10,
-          padding: 20,
-          minHeight: 450,
-          background: '#0f0f0f',
-        }}
-      >
-        <EditorContent editor={editor} />
-      </div>
+  style={{
+    border: '1px solid #2a2a2a',
+    borderRadius: 10,
+    padding: 20,
+    minHeight: 450,
+    background: '#0f0f0f',
+  }}
+>
+  <Toolbar editor={editor} />
+  <EditorContent editor={editor} />
+</div>
     </main>
   );
 }

@@ -1,5 +1,9 @@
 import { ClerkProvider, Show, SignInButton, UserButton } from '@clerk/nextjs';
 import './globals.css';
+export const metadata = {
+  title: 'CollabDocs — Real-time Collaborative Editor',
+  description: 'A Google Docs-style collaborative editor with conflict-free CRDT sync, live presence, and offline support.',
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
